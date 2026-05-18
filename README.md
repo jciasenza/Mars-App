@@ -1,6 +1,7 @@
 # 🚀 Mars App
 
 Usuario: admin
+
 Contraseña: 1234
 
 Mars App es una aplicación web premium desarrollada en React que te permite explorar de manera interactiva las increíbles fotografías tomadas por los rovers de la NASA (Curiosity, Opportunity y Spirit) en la superficie de Marte.
