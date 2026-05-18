@@ -1,41 +1,52 @@
-import { useFetch } from "../hooks/useFetch";
+import React from "react";
 import Message from "./Message";
 import Photos from "./Photos/Photos";
+import Loader from "./Loader/Loader";
+import Centered from "./Centered/Centered";
+import { useLanguage } from "../contexts/LanguageContext";
 
-const SelectsListTerrestre = ({
-  title,
-  url,
-  handleChange,
-  handleSavePhoto,
-}) => {
-  const { data, error } = useFetch(url);
-
-  if (!data) return null;
-  if (error) {
-    return (
-      <Message
-        msg={`Error ${error.status}:${error.status.Text}`}
-        bgColor="#dc3545"
-      />
-    );
-  }
-
-  let id = `select-${title}`;
+/**
+ * SelectsListTerrestre — Input de fecha terrestre + galería de fotos.
+ * Recibe photos/loading/error desde el padre (SelectsAnidados via useMarsPhotos).
+ * Siempre renderiza el input para que el usuario pueda cambiar de fecha incluso en caso de error o loading.
+ */
+const SelectsListTerrestre = ({ handleChange, handleSavePhoto, photos, loading, error }) => {
+  const { t } = useLanguage();
 
   return (
     <>
       <div className="select">
-        <label htmlFor={id}>Selecciona fecha terrestre</label>
+        <label htmlFor="select-earth-date">{t("filter_select_date_terrestre")}</label>
         <input
+          id="select-earth-date"
           className="form-select"
           onChange={handleChange}
           type="date"
-          id="start"
           name="trip-start"
+          defaultValue="2023-01-01"
         />
       </div>
 
-      <Photos photos={data} handleSavePhoto={handleSavePhoto} />
+      <div className="photos-output">
+        {loading && (
+          <Centered>
+            <Loader />
+          </Centered>
+        )}
+        
+        {!loading && error && (
+          <Centered>
+            <Message
+              msg={`${error.status ? `Error ${error.status}` : "Network Error"}: ${error.statusText || error.message || "An unexpected error occurred"}`}
+              bgColor="#dc3545"
+            />
+          </Centered>
+        )}
+        
+        {!loading && !error && (
+          <Photos photos={{ photos }} handleSavePhoto={handleSavePhoto} />
+        )}
+      </div>
     </>
   );
 };

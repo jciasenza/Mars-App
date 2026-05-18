@@ -1,83 +1,61 @@
 .fondo {
     width: 100%;
-    height: auto;
-    background-image: url("../../image/bg2.jpg");
+    background:
+      linear-gradient(rgba(15, 13, 12, 0.82), rgba(15, 13, 12, 0.9)),
+      url("../../image/bg2.jpg");
     background-position: center center;
     background-size: cover;
-    color: rgb(248, 222, 192) !important;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 8px;
+    box-shadow: 0 24px 70px rgba(0, 0, 0, 0.38);
+    color: #f8efe7;
+    padding: clamp(18px, 4vw, 34px);
   }
   
   .title {
-    color: rgb(192, 20, 20);
-    font-weight: 600;
-    font-size: 52px;
-    text-align: center;
-    position: relative;
+    align-items: center;
+    color: #f8efe7;
+    display: flex;
+    justify-content: space-between;
+    gap: 18px;
+    margin-bottom: 22px;
+  }
+
+  .title h1 {
+    font-size: clamp(34px, 5vw, 58px);
+    line-height: 1;
+    margin: 0;
+  }
+
+  .cleanButton {
+    align-items: center;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 8px;
+    color: #f1b45b;
+    cursor: pointer;
+    display: inline-flex;
+    font-size: 24px;
+    height: 48px;
     justify-content: center;
-    margin-right: 30px;
-    text-shadow: 1px 1px 2px black, 0 0 1em rgb(255, 94, 0),
-      0 0 0.2em rgb(255, 60, 0);
+    width: 48px;
+  }
+
+  .cleanButton:hover {
+    background: rgba(231, 120, 52, 0.16);
+    color: #fff3d9;
   }
   
   
   .tabla {
-    color:rgb(135, 135, 137);
+    color:#b9aaa0;
     font-size: 15px;
-    text-shadow: none;
-    text-align: center;
-    justify-content: center;
-    position: relative;
-   
-  }
-  table {
-    table-layout: fixed;
-    width: 100%;
-    border-collapse: collapse;
-    border: 3px solid purple;
-  }
-  
-  thead th:nth-child(1) {
-    width: 5%;
-  }
-  
-  thead th:nth-child(2) {
-    width: 10%;
-  }
-  
-  thead th:nth-child(3) {
-    width: 10%;
-  }
-  
-  thead th:nth-child(4) {
-    width: 25%;
-  }
-  
-  th, td {
-    padding: 10px;
-  }
-
-  th {
-    letter-spacing: 1px;
-  }
-  
-  td {
-    letter-spacing: 2px;
-  }
-  
-  tbody td {
-    text-align: center;
   }
  
-  thead {
-    font-size: 12px;
-    color: white;
-    font-weight: 600;
-    text-shadow: 1px 1px 1px black;
+  @media (max-width: 620px) {
+    .title {
+      align-items: flex-start;
+      flex-direction: column;
+    }
   }
-  
-  thead th {
-    background: linear-gradient(to bottom, rgba(0,0,0,0.1), rgba(0,0,0,0.5));
-    border: 3px solid purple;
-  }
- 
  

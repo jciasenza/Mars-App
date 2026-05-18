@@ -1,24 +1,126 @@
 .banner {
-  width: 100%;
-  background-image: url("../../image/bg.jpg");
+  width: min(1180px, 100%);
+  min-height: calc(100vh - 126px);
+  margin: 22px auto 0;
+  background:
+    linear-gradient(90deg, rgba(11, 10, 9, 0.92), rgba(11, 10, 9, 0.42) 58%, rgba(11, 10, 9, 0.2)),
+    url("../../image/bg.jpg");
   background-position: center center;
   background-size: cover;
-  color: rgb(248, 222, 192) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 8px;
+  box-shadow: 0 26px 80px rgba(0, 0, 0, 0.45);
+  color: #f8efe7;
+  overflow: hidden;
 }
 
 .content {
   display: flex;
+  flex-direction: column;
   justify-content: center;
-  height: 450px;
-  padding: 0 70px;
+  min-height: 520px;
+  max-width: 760px;
+  padding: 72px clamp(24px, 6vw, 76px);
 }
 
 .content h1 {
-  padding-top: 120px;
-  padding-left: 20px;
-  color: rgb(192, 20, 20);
-  font-weight: 600;
-  font-size: 52px;
-  text-shadow: 1px 1px 2px black, 0 0 1em rgb(255, 94, 0),
-    0 0 0.2em rgb(255, 60, 0);
+  color: #fff5ed;
+  font-size: clamp(42px, 7vw, 78px);
+  font-weight: 800;
+  line-height: 0.96;
+  margin: 0;
+  max-width: 740px;
+  text-shadow: 0 10px 40px rgba(0, 0, 0, 0.55);
+}
+
+.content p {
+  color: #f1b45b;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0;
+  margin: 0 0 16px;
+  text-transform: uppercase;
+}
+
+.content span {
+  color: #d8c8bc;
+  display: block;
+  font-size: 18px;
+  line-height: 1.7;
+  margin-top: 24px;
+  max-width: 560px;
+}
+
+.buttonGroup {
+  display: flex;
+  gap: 16px;
+  margin-top: 36px;
+  flex-wrap: wrap;
+}
+
+.btnPrimary {
+  background: linear-gradient(135deg, #e77834 0%, #be4b36 100%);
+  color: #fff;
+  border: none;
+  padding: 14px 28px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 16px;
+  cursor: pointer;
+  box-shadow: 0 10px 25px rgba(230, 92, 23, 0.3);
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+}
+
+.btnPrimary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 30px rgba(230, 92, 23, 0.45);
+}
+
+.btnSecondary {
+  background: rgba(255, 255, 255, 0.08);
+  color: #f8efe7;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  padding: 14px 28px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+}
+
+.btnSecondary:hover {
+  background: rgba(255, 255, 255, 0.15);
+  transform: translateY(-2px);
+  color: #fff;
+}
+
+@media (max-width: 720px) {
+  .banner {
+    background:
+      linear-gradient(rgba(11, 10, 9, 0.76), rgba(11, 10, 9, 0.86)),
+      url("../../image/bg.jpg");
+    background-position: center;
+  }
+
+  .content {
+    min-height: 440px;
+  }
+
+  .buttonGroup {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .btnPrimary,
+  .btnSecondary {
+    justify-content: center;
+  }
 }

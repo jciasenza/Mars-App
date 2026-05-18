@@ -1,78 +1,56 @@
-# En proceso...
+# 🚀 Mars App
 
-usuario: admin
+Mars App es una aplicación web premium desarrollada en React que te permite explorar de manera interactiva las increíbles fotografías tomadas por los rovers de la NASA (Curiosity, Opportunity y Spirit) en la superficie de Marte.
 
-contraseña: 1234
+## ✨ Características Principales
 
+* **Exploración por Fecha Solar y Terrestre**: Filtra imágenes utilizando el sol marciano o el calendario terrestre.
+* **Soporte Multilenguaje Completo (i18n)**: Traducción dinámica e instantánea entre Español (ES) e Inglés (EN) en toda la plataforma.
+* **Sistema de Favoritos Dual**:
+  * Guarda tus combinaciones de búsqueda exactas (Rover, Cámara, Fecha) para futuras exploraciones.
+  * Marca fotografías individuales con una estrella interactiva para guardarlas en una galería privada exclusiva.
+* **Diseño Premium y Glassmorphism**: Interfaz altamente estética con fondos inmersivos espaciales, modales animados de alta calidad y componentes responsivos.
+* **Menú Hamburguesa Móvil (Sidebar)**: Una barra lateral de cristal desenfocado (backdrop-filter blur) fluida y adaptativa para dispositivos con pantallas menores a 900px.
+* **Datos Resilientes**: Conexión a la API pública de NASA Open APIs con un fallback de datos en caso de errores de red o cuota.
 
+## 🛠️ Tecnologías
 
-# Getting Started with Create React App
+* **React (Create React App)** - Framework Frontend principal
+* **React Router Dom (v6)** - Navegación modular de la plataforma
+* **Context API & Reducer** - Gestión global del estado (Autenticación y Multilenguaje)
+* **CSS Modules & Variables** - Estilizado granular y tematización
+* **Axios / fetch** - Conexiones a la API REST de NASA
+* **Formik & Yup** - Manejo dinámico y multilenguaje de formularios y validaciones
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## 🚀 Instalación y Ejecución
 
-## Available Scripts
+Sigue estos pasos para arrancar el proyecto en tu entorno local:
 
-In the project directory, you can run:
+1. Clona el repositorio.
+2. Instala las dependencias:
+   ```bash
+   npm install
+   ```
+3. Configura el archivo de entorno `.env` en la raíz (usa la API Key provista por la NASA y establece tu `REACT_APP_VERSION`).
+4. Inicia el servidor de desarrollo local:
+   ```bash
+   npm start
+   ```
 
-### `npm start`
+El proyecto se levantará automáticamente en `http://localhost:3000`.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## ⚙️ Estructura del Proyecto
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+```text
+src/
+├── components/   # Componentes reutilizables (Botones, Modales, Header, Footer)
+├── contexts/     # Contextos Globales (AuthContext, LanguageContext)
+├── hooks/        # Custom hooks (useMarsPhotos, useFetch)
+├── pages/        # Vistas completas de enrutamiento (Login, Favorites, FavoritePhotos)
+├── reducers/     # Manejo de acciones y estado
+└── routes/       # Centralización del enrutador de React Router
+```
 
-### `npm test`
+## 👨‍💻 Acerca de
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Aplicación construida utilizando arquitectura limpia en React y optimizada meticulosamente para brindar una experiencia de usuario inmersiva de primer nivel.

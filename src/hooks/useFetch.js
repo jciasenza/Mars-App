@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 export const useFetch = (url) => {
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(null);
+  const [loading, setLoading] = useState(false); // fix: era null, debe ser booleano
 
   useEffect(() => {
     const abortController = new AbortController();
@@ -13,7 +13,7 @@ export const useFetch = (url) => {
       setLoading(true);
 
       try {
-        const res = await fetch(url);
+        const res = await fetch(url, { signal }); // fix: se pasa signal para que el abort cancele la request de red
 
         if (!res.ok) {
           let err = new Error("Error en la peticion Fetch");

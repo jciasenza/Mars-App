@@ -11,7 +11,7 @@ export const AuthProvider = ({ children }) => {
     const [state, dispatch] = useReducer(authReducer, initialState);
     
     const logout = () => {
-        dispatch({ tipe: LOGOUT });
+        dispatch({ type: LOGOUT }); // fix: "type" (era "tipe")
         localStorage.removeItem("auth");
     }
     const getUserInformation = () => jwt_decode(state.jwt);

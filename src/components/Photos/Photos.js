@@ -1,80 +1,152 @@
-import React from "react";
-import { Row, Col, Card } from "react-bootstrap";
+import React, { useState } from "react";
+import { Card } from "react-bootstrap";
 import Centered from "../Centered/Centered";
 import { FiCameraOff } from "react-icons/fi";
-import { AiOutlineStar } from "react-icons/ai";
+import { AiOutlineStar, AiFillStar } from "react-icons/ai";
 import TotalsPhotos from "../Totals";
+import { useLanguage } from "../../contexts/LanguageContext";
 import "./styles.css";
-import { useState } from "react";
 
-const Photos = ({ photos, handleSavePhoto }) => {
-  const [isDisabled, setIsDisabled] = useState(false);
+const Photos = ({ photos, handleSavePhoto, hideSaveSearch = false }) => {
+  const { t } = useLanguage();
 
-  const photosArr = Object.values(photos);
+  // Estado local sincronizado con localStorage para las fotos favoritas individuales
+  const [favPhotos, setFavPhotos] = useState(() => {
+    return JSON.parse(localStorage.getItem("favoritePhotos")) || [];
+  });
 
-  if (photosArr == 0) {
+  // Si estamos en la vista de favoritos (hideSaveSearch === true), la fuente de verdad es el estado local de favPhotos
+  const photosArr = hideSaveSearch ? favPhotos : (photos?.photos || []);
+
+  const toggleFav = (photo) => {
+    let updated;
+    const isFav = favPhotos.some((p) => p.id === photo.id);
+    if (isFav) {
+      updated = favPhotos.filter((p) => p.id !== photo.id);
+    } else {
+      updated = [...favPhotos, photo];
+    }
+    setFavPhotos(updated);
+    localStorage.setItem("favoritePhotos", JSON.stringify(updated));
+  };
+
+  if (photosArr.length === 0) {
     return (
       <Centered>
         <FiCameraOff />
-        <div>No hay fotos, busque otra camara</div>
+        <div style={{ marginTop: "12px", textAlign: "center", maxWidth: "480px" }}>
+          {hideSaveSearch ? t("fav_photos_empty") : t("gallery_no_photos")}
+        </div>
       </Centered>
     );
   }
+
   return (
     <>
-      <AiOutlineStar
-        className="favoritos"
-        onClick={handleSavePhoto}
-        value="Agregar Foto"
-        data-toggle="tooltip"
-        data-placement="left"
-        title="Agregar a Favoritos"
-        disabled={isDisabled && "disabled"}
-      />
-      <Row>
-        {photosArr.map((Arr) =>
-          Arr.map((photo) => (
-            <Col md={4} sm={10} className="separation">
-              <Card className="card__color" key={photo.id}>
-                <Card.Body>
-                  <AiOutlineStar
-                    className="favoritos"
-                    onClick={""}
-                    value="Agregar Foto"
-                    data-toggle="tooltip"
-                    data-placement="left"
-                    title="Agregar a Favoritos"
-                    disabled={isDisabled && "disabled"}
-                  />
-                  <Card.Title className="card-title__color">
-                    <b>Foto N°:</b> {photo.id}
-                  </Card.Title>
-                  <b>Fecha terrestre:</b> {photo.earth_date}
-                  <br />
-                  <b>Fecha solar:</b> {photo.sol}
-                  <Card.Img
-                    variant="top"
-                    className="img"
-                    src={photo.img_src}
-                    width="300"
-                    height="250"
-                  />
-                  <b>Lanzado: </b>
-                  {photo.rover.launch_date}
-                  <br />
-                  <b>Aterrizaje: </b>
-                  {photo.rover.landing_date}
-                  <br />
-                  <b>Estado: </b>
-                  {photo.rover.status}
-                </Card.Body>
-              </Card>
-            </Col>
-          ))
+      <div className="gallery-toolbar">
+        <div>
+          <span>{t("gallery_results")}</span>
+          <strong>
+            {photosArr.length} {hideSaveSearch ? t("fav_photos_results") : t("gallery_found")}
+          </strong>
+        </div>
+        {!hideSaveSearch && (
+          <button
+            className="favorite-action"
+            onClick={handleSavePhoto}
+            title={t("filter_save_btn")}
+            type="button"
+          >
+            <AiOutlineStar />
+            {t("filter_save_btn")}
+          </button>
         )}
-      </Row>
-      <TotalsPhotos total={photos.photos.length} />
+      </div>
+
+      <div className="photos-grid">
+        {photosArr.map((photo) => {
+          const isFav = favPhotos.some((p) => p.id === photo.id);
+          return (
+            <Card className="card__color" key={photo.id}>
+              <div className="image-shell">
+                <Card.Img
+                  variant="top"
+                  className="img"
+                  src={photo.img_src}
+                  alt={`Foto de Marte ${photo.id}`}
+                />
+              </div>
+              <Card.Body>
+                <div className="card-heading">
+                  <Card.Title className="card-title__color">
+                    Foto #{photo.id}
+                  </Card.Title>
+                  <button
+                    type="button"
+                    className="star-button"
+                    onClick={() => toggleFav(photo)}
+                    title={isFav ? t("card_star_remove") : t("card_star_add")}
+                    style={{
+                      background: "none",
+                      border: "none",
+                      padding: 0,
+                      cursor: "pointer",
+                      display: "flex",
+                      alignItems: "center",
+                    }}
+                  >
+                    {isFav ? (
+                      <AiFillStar
+                        style={{
+                          color: "var(--mars-gold)",
+                          fontSize: "24px",
+                          filter: "drop-shadow(0 0 4px rgba(241, 180, 91, 0.4))",
+                        }}
+                      />
+                    ) : (
+                      <AiOutlineStar
+                        style={{
+                          color: "var(--mars-muted)",
+                          fontSize: "24px",
+                        }}
+                      />
+                    )}
+                  </button>
+                </div>
+                <dl className="photo-meta">
+                  <div>
+                    <dt>{t("card_earth_date")}</dt>
+                    <dd>{photo.earth_date}</dd>
+                  </div>
+                  <div>
+                    <dt>{t("card_sol")}</dt>
+                    <dd>{photo.sol}</dd>
+                  </div>
+                  <div>
+                    <dt>{t("card_rover")}</dt>
+                    <dd>{photo.rover.name}</dd>
+                  </div>
+                  <div>
+                    <dt>{t("card_camera")}</dt>
+                    <dd>{photo.camera.full_name}</dd>
+                  </div>
+                  <div>
+                    <dt>{t("card_launch")}</dt>
+                    <dd>{photo.rover.launch_date}</dd>
+                  </div>
+                  <div>
+                    <dt>{t("card_status")}</dt>
+                    <dd>{photo.rover.status}</dd>
+                  </div>
+                </dl>
+              </Card.Body>
+            </Card>
+          );
+        })}
+      </div>
+      <TotalsPhotos total={photosArr.length} />
     </>
   );
 };
+
 export default Photos;

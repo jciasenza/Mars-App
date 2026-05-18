@@ -1,39 +1,215 @@
 @import "components/Photos/styles.css";
+
+:root {
+  --mars-bg: #100f0d;
+  --mars-bg-soft: #1d1714;
+  --mars-surface: rgba(30, 25, 22, 0.86);
+  --mars-surface-strong: rgba(18, 16, 15, 0.94);
+  --mars-border: rgba(255, 255, 255, 0.12);
+  --mars-text: #f8efe7;
+  --mars-muted: #b9aaa0;
+  --mars-orange: #e77834;
+  --mars-red: #be4b36;
+  --mars-gold: #f1b45b;
+  --mars-green: #74c69d;
+  --mars-shadow: 0 24px 70px rgba(0, 0, 0, 0.38);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  min-height: 100vh;
+  background:
+    linear-gradient(rgba(12, 11, 10, 0.72), rgba(12, 11, 10, 0.9)),
+    url("./image/bg2.jpg");
+  background-attachment: fixed;
+  background-position: center;
+  background-size: cover;
+}
+
 .App {
-  background-color: black;
-  padding-left: 30px;
-  padding-right: 30px;
-  padding-bottom: 20px;
+  min-height: 100vh;
+  padding: 0 24px 28px;
+}
+
+.main-shell {
+  width: min(1180px, 100%);
+  margin: 0 auto;
+  padding: 26px 0 0;
+}
+
+.view-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  margin: 8px 0 24px;
+}
+
+.eyebrow {
+  color: var(--mars-gold);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0;
+  margin: 0 0 8px;
+  text-transform: uppercase;
+}
+
+.view-title {
+  color: var(--mars-text);
+  font-size: clamp(34px, 5vw, 58px);
+  line-height: 1;
+  margin: 0;
+}
+
+.view-copy {
+  color: var(--mars-muted);
+  font-size: 16px;
+  line-height: 1.6;
+  margin: 12px 0 0;
+  max-width: 650px;
+}
+
+.filters-panel {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(180px, 1fr));
+  gap: 14px;
+  align-items: end;
+  margin-bottom: 24px;
+  padding: 18px;
+  background: var(--mars-surface);
+  border: 1px solid var(--mars-border);
+  border-radius: 8px;
+  box-shadow: var(--mars-shadow);
+  backdrop-filter: blur(16px);
 }
 
 .select {
-  color: rgb(254, 20, 20);
-  padding: 10px;
-  display: inline-grid;
-  align-items: center;
-  justify-items: center;
+  color: var(--mars-text);
+  display: grid;
+  gap: 8px;
+  min-width: 0;
 }
+
+.select label {
+  color: var(--mars-muted);
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
 .form-select {
-  border-radius: 30px;
-  border: none;
-  margin: 8px;
-  padding: 8px;
-  background-color: rgb(43, 43, 43);
-  color: brown;
+  width: 100%;
+  min-height: 44px;
+  border-radius: 8px;
+  border: 1px solid var(--mars-border);
+  margin: 0;
+  padding: 10px 12px;
+  background-color: rgba(12, 12, 12, 0.74);
+  color: var(--mars-text);
+  outline: none;
 }
+
+.form-select:focus {
+  border-color: var(--mars-orange);
+  box-shadow: 0 0 0 3px rgba(231, 120, 52, 0.18);
+}
+
+.gallery-section {
+  margin-top: 8px;
+}
+
+.photos-output {
+  grid-column: 1 / -1;
+  margin-top: 6px;
+}
+
 .eliminar {
   background-color: transparent;
-  color: rgb(192, 20, 20);
+  border: 0;
+  color: var(--mars-red);
   font-size: 20px;
+  padding: 8px;
+  cursor: pointer;
 }
+
 .ver {
   background-color: transparent;
-  color: green;
+  border: 0;
+  color: var(--mars-green);
   font-size: 20px;
+  padding: 8px;
+  cursor: pointer;
 }
+
 .eliminar:hover {
-  color: rgb(116, 2, 2);
+  color: #ff7666;
 }
+
 .ver:hover {
-  color: rgb(19, 62, 1);
+  color: #b7f7d2;
+}
+
+.listado {
+  overflow-x: auto;
+  border: 1px solid var(--mars-border);
+  border-radius: 8px;
+  background: var(--mars-surface-strong);
+  box-shadow: var(--mars-shadow);
+}
+
+.favorites-table {
+  width: 100%;
+  min-width: 760px;
+  border-collapse: collapse;
+}
+
+.favorites-table th,
+.favorites-table td {
+  padding: 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  color: var(--mars-text);
+  text-align: left;
+}
+
+.favorites-table th {
+  color: var(--mars-gold);
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.favorites-table td {
+  color: var(--mars-muted);
+}
+
+.tabla2:hover td {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+@media (max-width: 900px) {
+  .filters-panel {
+    grid-template-columns: 1fr;
+  }
+
+  .view-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 620px) {
+  .App {
+    padding: 0 14px 22px;
+  }
+
+  .main-shell {
+    padding-top: 16px;
+  }
+}
+
+a:hover {
+  text-decoration: none;
 }

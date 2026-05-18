@@ -1,12 +1,14 @@
 .total {
   width: 100%;
-  background-color: rgb(0, 0, 0);
-  color: rgb(180, 135, 12) !important;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  color: #f1b45b;
   text-align: center;
   font-weight: bold;
   text-transform: uppercase;
-  padding-top: 20px;
-  padding-bottom: 20px;
+  margin-top: 18px;
+  padding: 16px;
 }
 
 .total i {

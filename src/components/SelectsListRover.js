@@ -1,29 +1,22 @@
-import { useFetch } from "../hooks/useFetch";
-import Message from "./Message";
+import React from "react";
+import { useLanguage } from "../contexts/LanguageContext";
 
-const SelectsListRover = ({ title, url, handleChange }) => {
-  const { data, error } = useFetch(url);
+/**
+ * SelectsListRover — Dropdown de selección de rover.
+ * Componente UI puro: no hace fetch, solo dispara eventos onChange.
+ */
+const SelectsListRover = ({ handleChange }) => {
+  const { t } = useLanguage();
 
-  if (!data) return null;
-  if (error) {
-    return (
-      <Message
-        msg={`Error ${error.status}:${error.status.Text}`}
-        bgColor="#dc3545"
-      />
-    );
-  }
-
-  let id = `select-${title}`;
   return (
     <div className="select">
-      <label htmlFor={id}>Selecciona un {title}</label>
+      <label htmlFor="select-rover">{t("filter_select_rover")}</label>
       <select
         className="form-select"
-        aria-label="Default select example"
-        name={id}
-        id={id}
+        id="select-rover"
+        name="select-rover"
         onChange={handleChange}
+        defaultValue="curiosity"
       >
         <option value="curiosity">Curiosity</option>
         <option value="spirit">Spirit</option>

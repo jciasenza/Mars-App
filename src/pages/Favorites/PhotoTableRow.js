@@ -2,26 +2,21 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { ImEye } from "react-icons/im";
 import { BsTrash } from "react-icons/bs";
-import "./fondo.module.css";
-import { useState } from "react"
-  
-let myPhotosInit = JSON.parse(localStorage.getItem("myPhotos")) || [];
+import { useLanguage } from "../../contexts/LanguageContext";
 
-const PhotoTableRow = ({ id, misFotos }) => {
-  let { sol, camera, terrestre, rover, page, api_key, URL } = misFotos;
-  
-  const [myPhotos, setMyPhotos] = useState(myPhotosInit);
-
+const PhotoTableRow = ({ id, misFotos, onDelete }) => {
+  let { sol, camera, terrestre, rover, page } = misFotos;
   let navigate = useNavigate();
+  const { t } = useLanguage();
 
-  function handleDeletePhoto(id) {
-    let isDelete = window.confirm(`Estas seguro de borrar el favorito ${id}`);
-    if (isDelete) {
-      let phot = myPhotos.filter((el, index) => index !== id);
-      setMyPhotos(phot);
-      localStorage.setItem("myPhotos", JSON.stringify(phot));
+  const handleView = () => {
+    // Si tiene sol y no es "0", es búsqueda por fecha solar, de lo contrario terrestre
+    if (sol && sol !== "0") {
+      navigate(`/sol?rover=${rover}&camera=${camera}&sol=${sol}&page=${page}`);
+    } else {
+      navigate(`/terrestre?rover=${rover}&camera=${camera}&earth_date=${terrestre}&page=${page}`);
     }
-  }
+  };
 
   return (
     <tr className="tabla2">
@@ -32,16 +27,23 @@ const PhotoTableRow = ({ id, misFotos }) => {
       <td>{terrestre}</td>
       <td>{sol}</td>
       <td>
-
-        <button className="ver" onClick={() => navigate(`${URL}/${rover}/photos?earth_date=${terrestre}&camera=${camera}&page=${page}&api_key=${api_key}`)}>
+        <button
+          className="ver"
+          type="button"
+          onClick={handleView}
+          title={t("nav_busquedas")}
+        >
           <ImEye />
         </button> 
-        <button className="eliminar" data-toggle="tooltip"
-            data-placement="rigth"
-            title="Vaciar Favoritos"onClick={() => handleDeletePhoto(id)}>
+        <button
+          className="eliminar"
+          title={t("modal_btn_confirm")}
+          type="button"
+          onClick={() => onDelete(id)}
+        >
           <BsTrash />
         </button>
-     </td>
+      </td>
     </tr>
   );
 };

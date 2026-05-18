@@ -4,7 +4,7 @@ import styles from "./Pagination.module.css";
 import classnames from "classnames";
 import { AiOutlineArrowRight, AiOutlineArrowLeft } from "react-icons/ai";
 
-const Pagination = ({ page, setPage, totalPages, limit, setLimit }) => {
+const Pagination = ({ page, setPage, totalPages = 1, limit, setLimit }) => {
   const increasePage = () => {
     if (page + 1 > totalPages) {
       return setPage(totalPages);
@@ -57,10 +57,11 @@ const Pagination = ({ page, setPage, totalPages, limit, setLimit }) => {
               "browser-default custom-select",
               styles.select
             )}
+            value={limit || LIMITS[0]}
             onChange={(ev) => setLimit(ev.target.value)}
           >
             {LIMITS.map((_limit) => (
-              <option value={_limit} selected={_limit === limit}>
+              <option key={_limit} value={_limit}>
                 {_limit}
               </option>
             ))}

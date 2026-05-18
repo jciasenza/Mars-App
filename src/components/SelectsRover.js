@@ -1,48 +1,58 @@
 import React, { useState } from "react";
 import SelectsList from "./SelectsList";
+import { useMarsPhotos } from "../hooks/useMarsPhotos";
 
-const URL = "https://api.nasa.gov/mars-photos/api/v1/rovers";
-
-const api_key = "twqPmUgVMDyD4mqoa0pTpwSlSJDPIaQcTF8RFZfg";
-
-const SelectsAnidados = () => {
+/**
+ * SelectsRover — Componente alternativo/legacy de exploración de fotos.
+ * Usa useMarsPhotos para centralizar las llamadas a la API.
+ */
+const SelectsRover = () => {
   const [rover, setRover] = useState("curiosity");
   const [sol, setSol] = useState("1000");
   const [camera, setCamera] = useState("fhaz");
+
+  const { photos, loading, error } = useMarsPhotos({ rover, sol, camera, mode: "sol" });
 
   return (
     <div className="App-header">
       <h2>API NASA</h2>
       <h3>Fotos de Marte</h3>
 
-      <SelectsListRover
-        title="rover"
-        url={`${URL}/${rover}/photos?sol=${sol}&camera=${camera}&api_key=${api_key}`}
-        handleChange={(e) => {
-          setRover(e.target.value);
-        }}
-      />
+      <div className="select">
+        <label htmlFor="rover-select">Rover</label>
+        <select
+          id="rover-select"
+          onChange={(e) => setRover(e.target.value)}
+          defaultValue="curiosity"
+        >
+          <option value="curiosity">Curiosity</option>
+          <option value="spirit">Spirit</option>
+          <option value="opportunity">Opportunity</option>
+        </select>
+      </div>
 
       {rover && (
         <SelectsList
-          title="sol"
-          url={`${URL}/${rover}/photos?sol=${sol}&camera=${camera}&api_key=${api_key}`}
-          handleChange={(e) => {
-            setSol(e.target.value);
-          }}
+          handleChange={(e) => setSol(e.target.value)}
+          photos={photos}
+          loading={loading}
+          error={error}
         />
       )}
+
       {sol && (
-        <SelectsList
-          title="camera"
-          url={`${URL}/${rover}/photos?sol=${sol}&camera=${camera}&api_key=${api_key}`}
-          handleChange={(e) => {
-            setCamera(e.target.value);
-          }}
-        />
+        <div className="select">
+          <label htmlFor="camera-select">Cámara</label>
+          <select id="camera-select" onChange={(e) => setCamera(e.target.value)}>
+            <option value="fhaz">FHAZ</option>
+            <option value="rhaz">RHAZ</option>
+            <option value="mast">MAST</option>
+            <option value="navcam">NAVCAM</option>
+          </select>
+        </div>
       )}
     </div>
   );
 };
 
-export default SelectsAnidados;
+export default SelectsRover;
