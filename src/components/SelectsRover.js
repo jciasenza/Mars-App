@@ -8,7 +8,7 @@ import { useMarsPhotos } from "../hooks/useMarsPhotos";
  */
 const SelectsRover = () => {
   const [rover, setRover] = useState("curiosity");
-  const [sol, setSol] = useState("1000");
+  const [sol, setSol] = useState("1");
   const [camera, setCamera] = useState("fhaz");
 
   const { photos, loading, error } = useMarsPhotos({ rover, sol, camera, mode: "sol" });

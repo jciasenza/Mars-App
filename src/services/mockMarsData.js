@@ -114,8 +114,8 @@ export const mockMarsData = {
       const basePhoto = MARS_PHOTOS_POOL[idx];
       selectedPhotos.push({
         id: basePhoto.id + i * 100 + (parseInt(sol, 10) || 0),
-        sol: sol ? parseInt(sol, 10) : 1000,
-        earth_date: earthDate || "2023-01-01",
+        sol: sol ? parseInt(sol, 10) : 1,
+        earth_date: earthDate || "2015-01-01",
         img_src: basePhoto.img_src,
         camera: {
           id: 20 + i,

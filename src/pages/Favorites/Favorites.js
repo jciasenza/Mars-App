@@ -2,8 +2,9 @@ import "../../App.css";
 import styles from "./fondo.module.css";
 import PhotoTableFav from "./PhotoTableFav";
 import { BsTrash } from "react-icons/bs";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Modal from "../../components/Modal/Modal";
+import Pagination from "../../components/Pagination";
 import { useLanguage } from "../../contexts/LanguageContext";
 
 const Favorites = () => {
@@ -17,6 +18,18 @@ const Favorites = () => {
   
   // Estado para eliminar un favorito individual por su índice
   const [deleteIndex, setDeleteIndex] = useState(null);
+
+  // Estado para la paginación de búsquedas guardadas
+  const [page, setPage] = useState(1);
+  const itemsPerPage = 8;
+  const totalPages = Math.ceil(myPhotos.length / itemsPerPage);
+
+  // Auto-corregir la página actual si se eliminan elementos y la página queda vacía
+  useEffect(() => {
+    if (page > totalPages && totalPages > 0) {
+      setPage(totalPages);
+    }
+  }, [myPhotos.length, page, totalPages]);
 
   const handleLimpiarTodos = () => {
     setConfirmClearModal(true);
@@ -81,8 +94,21 @@ const Favorites = () => {
             )}
           </div>
           <div className={styles.tabla}>
-            <PhotoTableFav myPhotos={myPhotos} onDelete={setDeleteIndex} />
+            <PhotoTableFav 
+              myPhotos={myPhotos.slice((page - 1) * itemsPerPage, page * itemsPerPage)} 
+              onDelete={setDeleteIndex} 
+            />
           </div>
+
+          {myPhotos.length > itemsPerPage && (
+            <section className="gallery-section" style={{ marginTop: "24px", display: "flex", justifyContent: "center" }}>
+              <Pagination
+                setPage={(p) => { window.scrollTo(0, 0); setPage(p); }}
+                page={page}
+                totalPages={totalPages}
+              />
+            </section>
+          )}
         </div>
       </main>
     </div>

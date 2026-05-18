@@ -10,7 +10,7 @@ import { useLanguage } from "../contexts/LanguageContext";
  * Recibe photos/loading/error desde el padre (SelectsAnidados via useMarsPhotos).
  * Siempre renderiza el input para que el usuario pueda cambiar de fecha incluso en caso de error o loading.
  */
-const SelectsListTerrestre = ({ handleChange, handleSavePhoto, photos, loading, error }) => {
+const SelectsListTerrestre = ({ handleChange, handleSavePhoto, photos, loading, error, page }) => {
   const { t } = useLanguage();
 
   return (
@@ -23,7 +23,7 @@ const SelectsListTerrestre = ({ handleChange, handleSavePhoto, photos, loading, 
           onChange={handleChange}
           type="date"
           name="trip-start"
-          defaultValue="2023-01-01"
+          defaultValue="2015-01-01"
         />
       </div>
 
@@ -44,7 +44,7 @@ const SelectsListTerrestre = ({ handleChange, handleSavePhoto, photos, loading, 
         )}
         
         {!loading && !error && (
-          <Photos photos={{ photos }} handleSavePhoto={handleSavePhoto} />
+          <Photos photos={{ photos }} handleSavePhoto={handleSavePhoto} page={page} />
         )}
       </div>
     </>

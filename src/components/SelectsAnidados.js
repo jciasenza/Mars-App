@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import SelectsList from "./SelectsList";
-import SelectsListCamara from "./SelectsListCamara";
 import SelectsListRover from "./SelectsListRover";
 import SelectsListTerrestre from "./SelectsListTerrestre";
 import Pagination from "./Pagination";
@@ -19,12 +18,9 @@ const SelectsAnidados = ({ select }) => {
 
   // Inicializar estados desde Query Params para soportar el botón "Ver" de Favoritos
   const [rover, setRover] = useState(searchParams.get("rover") || "curiosity");
-  const [sol, setSol] = useState(searchParams.get("sol") || "1000");
-  const [terrestre, setTerrestre] = useState(searchParams.get("earth_date") || "2023-01-01");
-  const [camera, setCamera] = useState(searchParams.get("camera") || "fhaz");
+  const [sol, setSol] = useState(searchParams.get("sol") || "1");
+  const [terrestre, setTerrestre] = useState(searchParams.get("earth_date") || "2015-01-01");
   const [page, setPage] = useState(parseInt(searchParams.get("page"), 10) || 1);
-  
-  const [limit, setLimit] = useState();
   const [myPhotos, setMyPhotos] = useState(myPhotosInit);
   const [modal, setModal] = useState({ isOpen: false });
 
@@ -33,23 +29,24 @@ const SelectsAnidados = ({ select }) => {
     const r = searchParams.get("rover");
     const s = searchParams.get("sol");
     const t = searchParams.get("earth_date");
-    const c = searchParams.get("camera");
-    const p = searchParams.get("page");
 
     if (r) setRover(r);
     if (s) setSol(s);
     if (t) setTerrestre(t);
-    if (c) setCamera(c);
-    if (p) setPage(parseInt(p, 10));
   }, [searchParams]);
 
+  // Al cambiar filtros principales, resetear a la página 1 de forma automática
+  useEffect(() => {
+    setPage(1);
+  }, [rover, sol, terrestre]);
+
   // Una sola llamada a la API, centralizada en el custom hook
+  // Una sola llamada a la API, centralizada en el custom hook (fijamos page = 1 para traer todo el lote de 25)
   const { photos, loading, error } = useMarsPhotos({
     rover,
     sol,
     earthDate: terrestre,
-    camera,
-    page,
+    page: 1,
     mode: select ? "sol" : "earth_date",
   });
 
@@ -58,7 +55,7 @@ const SelectsAnidados = ({ select }) => {
   }, [myPhotos]);
 
   const handleSavePhoto = () => {
-    const currentPhoto = { rover, sol, terrestre, camera, page };
+    const currentPhoto = { rover, sol, terrestre, page };
     setMyPhotos((prev) => [...prev, currentPhoto]);
     setModal({ isOpen: true });
   };
@@ -69,7 +66,7 @@ const SelectsAnidados = ({ select }) => {
         isOpen={modal.isOpen}
         type="success"
         title={t("modal_success_title")}
-        message={`${t("modal_success_desc")} (Rover: ${rover}, Camera: ${camera})`}
+        message={`${t("modal_success_desc")} (Rover: ${rover})`}
         confirmText={t("modal_btn_ok")}
         onConfirm={() => setModal({ isOpen: false })}
       />
@@ -92,9 +89,6 @@ const SelectsAnidados = ({ select }) => {
           <SelectsListRover
             handleChange={(e) => setRover(e.target.value)}
           />
-          <SelectsListCamara
-            handleChange={(e) => setCamera(e.target.value)}
-          />
 
           {/* Input de fecha + galería de fotos — reciben datos ya resueltos */}
           {select ? (
@@ -104,6 +98,7 @@ const SelectsAnidados = ({ select }) => {
               photos={photos}
               loading={loading}
               error={error}
+              page={page}
             />
           ) : (
             <SelectsListTerrestre
@@ -112,18 +107,20 @@ const SelectsAnidados = ({ select }) => {
               photos={photos}
               loading={loading}
               error={error}
+              page={page}
             />
           )}
         </section>
 
-        <section className="gallery-section">
-          <Pagination
-            setPage={(p) => { window.scrollTo(0, 0); setPage(p); }}
-            page={page}
-            limit={limit}
-            setLimit={(l) => { window.scrollTo(0, 0); setLimit(l); }}
-          />
-        </section>
+        {photos && photos.length > 8 && (
+          <section className="gallery-section">
+            <Pagination
+              setPage={(p) => { window.scrollTo(0, 0); setPage(p); }}
+              page={page}
+              totalPages={Math.ceil(photos.length / 8)}
+            />
+          </section>
+        )}
       </main>
     </div>
   );

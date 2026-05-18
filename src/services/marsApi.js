@@ -8,34 +8,32 @@
  * Ningún componente ni hook debería leer process.env directamente.
  */
 
-const NASA_URL = process.env.REACT_APP_NASA_API_URL;
-const API_KEY  = process.env.REACT_APP_NASA_API_KEY;
-
-if (!NASA_URL || !API_KEY) {
-  console.warn(
-    "[marsApi] Faltan variables de entorno. Revisá el archivo .env:\n" +
-    "  REACT_APP_NASA_API_URL\n  REACT_APP_NASA_API_KEY"
-  );
-}
+// Se utiliza la URL proxy de Nebulum para saltar los límites de rate limit de NASA
+const NASA_URL = "https://rovers.nebulum.one/api/v1/rovers";
+// const API_KEY  = process.env.REACT_APP_NASA_API_KEY || "DEMO_KEY";
 
 export const marsApi = {
   /**
    * Consulta fotos por fecha solar (sol).
-   * @param {string} rover   - "curiosity" | "spirit" | "opportunity"
+   * @param {string} rover   - "curiosity" | "perseverance"
    * @param {string|number} sol
-   * @param {string} camera  - ej: "fhaz", "mast", "navcam"
    * @param {number} page
    */
-  bySol: (rover, sol, camera, page = 1) =>
-    `${NASA_URL}/${rover}/photos?sol=${sol}&camera=${camera}&page=${page}&api_key=${API_KEY}`,
+  bySol: (rover, sol, page = 1) =>
+    `${NASA_URL}/${rover}/photos?sol=${sol}&page=${page}`,
 
   /**
    * Consulta fotos por fecha terrestre (earth_date).
-   * @param {string} rover
+   * @param {string} rover   - "curiosity" | "perseverance"
    * @param {string} earthDate - formato "YYYY-MM-DD"
-   * @param {string} camera
    * @param {number} page
    */
-  byEarthDate: (rover, earthDate, camera, page = 1) =>
-    `${NASA_URL}/${rover}/photos?earth_date=${earthDate}&camera=${camera}&page=${page}&api_key=${API_KEY}`,
+  byEarthDate: (rover, earthDate, page = 1) =>
+    `${NASA_URL}/${rover}/photos?earth_date=${earthDate}&page=${page}`,
+
+  /**
+   * Consulta una foto específica por su ID de manera directa en el endpoint de fotos.
+   * @param {string|number} id - El ID único de la fotografía
+   */
+  byId: (id) => `https://rovers.nebulum.one/api/v1/photos/${id}`,
 };

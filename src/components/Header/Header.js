@@ -16,8 +16,8 @@ function Header() {
 
   const location = useLocation();
 
-  // Si no está logueado o estamos en la pantalla de login explícitamente, ocultar el Header
-  if (!state.isLoggedIn || location.pathname === "/login") {
+  // Si no está logueado o estamos en la pantalla de login (o root) explícitamente, ocultar el Header
+  if (!state.isLoggedIn || location.pathname === "/login" || location.pathname === "/") {
     return null;
   }
 
@@ -50,65 +50,67 @@ function Header() {
           >
             {menuOpen ? <FiX /> : <FiMenu />}
           </button>
-        {/* Navegación y Enlaces */}
-        <nav
-          className={`${styles.links} ${menuOpen ? styles.linksOpen : ""}`}
-          aria-label="Navegación principal"
-        >
-          <Link to="/inicio" onClick={closeMenu}>
-            {t("nav_inicio")}
-          </Link>
-          <Link to="/sol" onClick={closeMenu}>
-            {t("nav_fecha_solar")}
-          </Link>
-          <Link to="/terrestre" onClick={closeMenu}>
-            {t("nav_fecha_terrestre")}
-          </Link>
-          <Link to="/favorites" onClick={closeMenu}>
-            {t("nav_busquedas")}
-          </Link>
-          <Link to="/favorite-photos" onClick={closeMenu}>
-            {t("nav_fotos")}
-          </Link>
-
-          {/* Botón Acerca de */}
-          <button
-            onClick={() => {
-              setAboutOpen(true);
-              closeMenu();
-            }}
-            className={styles.aboutBtn}
-            type="button"
+          {/* Navegación y Enlaces */}
+          <nav
+            className={`${styles.links} ${menuOpen ? styles.linksOpen : ""}`}
+            aria-label="Navegación principal"
           >
-            <FiInfo />
-            {t("nav_acerca_de")}
-          </button>
+            <Link to="/inicio" onClick={closeMenu}>
+              {t("nav_inicio")}
+            </Link>
+            <Link to="/sol" onClick={closeMenu}>
+              {t("nav_fecha_solar")}
+            </Link>
+            <Link to="/terrestre" onClick={closeMenu}>
+              {t("nav_fecha_terrestre")}
+            </Link>
+            <Link to="/favorites" onClick={closeMenu}>
+              {t("nav_busquedas")}
+            </Link>
+            <Link to="/favorite-photos" onClick={closeMenu}>
+              {t("nav_fotos")}
+            </Link>
+            <Link to="/buscar-id" onClick={closeMenu}>
+              {t("nav_buscar_id")}
+            </Link>
 
-          {/* Selector de idioma */}
-          <button
-            onClick={toggleLanguage}
-            className={styles.langBtn}
-            type="button"
-          >
-            <FiGlobe />
-            {language.toUpperCase()}
-          </button>
+            {/* Botón Acerca de */}
+            <button
+              onClick={() => {
+                setAboutOpen(true);
+                closeMenu();
+              }}
+              className={styles.aboutBtn}
+              type="button"
+            >
+              <FiInfo />
+              {t("nav_acerca_de")}
+            </button>
 
-          <Link
-            to="/login"
-            className={styles.logout}
-            onClick={() => {
-              logout();
-              closeMenu();
-            }}
-          >
-            {t("nav_logout")}
-          </Link>
-        </nav>
-      </div>
-    </header>
+            {/* Selector de idioma */}
+            <button
+              onClick={toggleLanguage}
+              className={styles.langBtn}
+              type="button"
+            >
+              <FiGlobe />
+              {language.toUpperCase()}
+            </button>
 
-      {/* Modal Acerca de (Fuera del header para evitar trampa de z-index) */}
+            <Link
+              to="/login"
+              className={styles.logout}
+              onClick={() => {
+                logout();
+                closeMenu();
+              }}
+            >
+              {t("nav_logout")}
+            </Link>
+          </nav>
+        </div>
+      </header>
+
       <Modal
         isOpen={aboutOpen}
         type="info"

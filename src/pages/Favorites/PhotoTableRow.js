@@ -5,16 +5,16 @@ import { BsTrash } from "react-icons/bs";
 import { useLanguage } from "../../contexts/LanguageContext";
 
 const PhotoTableRow = ({ id, misFotos, onDelete }) => {
-  let { sol, camera, terrestre, rover, page } = misFotos;
+  let { sol, terrestre, rover, page } = misFotos;
   let navigate = useNavigate();
   const { t } = useLanguage();
 
   const handleView = () => {
     // Si tiene sol y no es "0", es búsqueda por fecha solar, de lo contrario terrestre
     if (sol && sol !== "0") {
-      navigate(`/sol?rover=${rover}&camera=${camera}&sol=${sol}&page=${page}`);
+      navigate(`/sol?rover=${rover}&sol=${sol}&page=${page}`);
     } else {
-      navigate(`/terrestre?rover=${rover}&camera=${camera}&earth_date=${terrestre}&page=${page}`);
+      navigate(`/terrestre?rover=${rover}&earth_date=${terrestre}&page=${page}`);
     }
   };
 
@@ -22,7 +22,6 @@ const PhotoTableRow = ({ id, misFotos, onDelete }) => {
     <tr className="tabla2">
       <td>{id}</td>
       <td>{page}</td>
-      <td>{camera}</td>
       <td>{rover}</td>
       <td>{terrestre}</td>
       <td>{sol}</td>

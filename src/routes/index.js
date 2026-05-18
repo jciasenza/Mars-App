@@ -5,6 +5,7 @@ import SelectsAnidados from "../components/SelectsAnidados";
 import { useState } from "react";
 import Favorites from "../pages/Favorites/Favorites";
 import FavoritePhotos from "../pages/Favorites/FavoritePhotos";
+import SearchById from "../pages/Favorites/SearchById";
 
 const Rutas = () => {
   const [select, setSelect] = useState(true);
@@ -34,6 +35,7 @@ const Rutas = () => {
       />
       <Route path="/favorites" element={<Favorites />} />
       <Route path="/favorite-photos" element={<FavoritePhotos />} />
+      <Route path="/buscar-id" element={<SearchById />} />
     </Routes>
   );
 };

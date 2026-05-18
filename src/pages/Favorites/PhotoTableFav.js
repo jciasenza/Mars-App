@@ -12,7 +12,6 @@ const PhotoTableFav = ({ myPhotos, onDelete }) => {
           <tr>
             <th>{t("fav_searches_table_id")}</th>
             <th>{t("fav_searches_table_page")}</th>
-            <th>{t("fav_searches_table_camera")}</th>
             <th>{t("fav_searches_table_rover")}</th>
             <th>{t("fav_searches_table_earth")}</th>
             <th>{t("fav_searches_table_solar")}</th>
@@ -31,7 +30,7 @@ const PhotoTableFav = ({ myPhotos, onDelete }) => {
             ))
           ) : (
             <tr>
-              <td colSpan="7" className="vacio" style={{ textAlign: "center", padding: "32px", color: "var(--mars-muted)" }}>
+              <td colSpan="6" className="vacio" style={{ textAlign: "center", padding: "32px", color: "var(--mars-muted)" }}>
                 {t("fav_searches_empty")}
               </td>
             </tr>

@@ -1,22 +1,25 @@
 import React from "react";
-import { LIMITS } from "../SelectsAnidados";
 import styles from "./Pagination.module.css";
 import classnames from "classnames";
 import { AiOutlineArrowRight, AiOutlineArrowLeft } from "react-icons/ai";
 
-const Pagination = ({ page, setPage, totalPages = 1, limit, setLimit }) => {
+const Pagination = ({ page, setPage, totalPages = 1 }) => {
   const increasePage = () => {
-    if (page + 1 > totalPages) {
-      return setPage(totalPages);
-    }
-    return setPage(page + 1);
+    if (page >= totalPages) return;
+    setPage(page + 1);
   };
 
   const decreasePage = () => {
-    if (page - 1 === 0) {
-      return setPage(1);
-    }
+    if (page <= 1) return;
     setPage(page - 1);
+  };
+
+  const getPageNumbers = () => {
+    const nums = [];
+    for (let i = 1; i <= totalPages; i++) {
+      nums.push(i);
+    }
+    return nums;
   };
 
   return (
@@ -25,49 +28,35 @@ const Pagination = ({ page, setPage, totalPages = 1, limit, setLimit }) => {
         <div
           onClick={decreasePage}
           className={classnames(styles.inline, styles["arrow-left"])}
+          style={{ cursor: page === 1 ? "not-allowed" : "pointer", opacity: page === 1 ? 0.4 : 1 }}
         >
-          {" "}
           <AiOutlineArrowLeft />
-          <i className="fas fa-angle-left" />
         </div>
+        
         <div className={styles.numbers}>
-          {[...Array(totalPages)].map((item, index) => (
+          {getPageNumbers().map((num) => (
             <span
-              key={index + 1}
+              key={num}
+              onClick={() => {
+                if (num !== page) setPage(num);
+              }}
               className={classnames(styles.number, {
-                active: index + 1 === page,
+                active: num === page,
               })}
+              style={{ cursor: num === page ? "default" : "pointer" }}
             >
-              {page}
+              {num}
             </span>
           ))}
         </div>
+
         <div
           className={classnames(styles.inline, styles["arrow-right"])}
           onClick={increasePage}
+          style={{ cursor: page === totalPages ? "not-allowed" : "pointer", opacity: page === totalPages ? 0.4 : 1 }}
         >
-          {" "}
           <AiOutlineArrowRight />
-          <i className="fas fa-angle-right" />
         </div>
-        <div className={styles.inline}></div>
-        <div className={styles.inline}>
-          <select
-            className={classnames(
-              "browser-default custom-select",
-              styles.select
-            )}
-            value={limit || LIMITS[0]}
-            onChange={(ev) => setLimit(ev.target.value)}
-          >
-            {LIMITS.map((_limit) => (
-              <option key={_limit} value={_limit}>
-                {_limit}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div className={styles.inline}></div>
       </div>
     </div>
   );

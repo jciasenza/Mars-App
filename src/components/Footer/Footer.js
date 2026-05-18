@@ -84,10 +84,6 @@ export default function Footer() {
                 <FaEnvelope />
               </a>
             </div>
-
-            {/* <p className="footer-contact-text">
-              {t("footer_contact_text")}
-            </p> */}
           </div>
         </div>
 

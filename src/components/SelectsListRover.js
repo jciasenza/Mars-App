@@ -19,8 +19,7 @@ const SelectsListRover = ({ handleChange }) => {
         defaultValue="curiosity"
       >
         <option value="curiosity">Curiosity</option>
-        <option value="spirit">Spirit</option>
-        <option value="opportunity">Opportunity</option>
+        <option value="perseverance">Perseverance</option>
       </select>
     </div>
   );
