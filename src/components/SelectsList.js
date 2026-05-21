@@ -10,7 +10,7 @@ import { useLanguage } from "../contexts/LanguageContext";
  * Recibe photos/loading/error desde el padre (SelectsAnidados via useMarsPhotos).
  * Siempre renderiza el input para que el usuario pueda cambiar de fecha incluso en caso de error o loading.
  */
-const SelectsList = ({ handleChange, handleSavePhoto, photos, loading, error, page }) => {
+const SelectsList = ({ handleChange, handleSavePhoto, photos, loading, error, page, isSearchSaved }) => {
   const { t } = useLanguage();
 
   return (
@@ -46,7 +46,12 @@ const SelectsList = ({ handleChange, handleSavePhoto, photos, loading, error, pa
         )}
 
         {!loading && !error && (
-          <Photos photos={{ photos }} handleSavePhoto={handleSavePhoto} page={page} />
+          <Photos 
+            photos={{ photos }} 
+            handleSavePhoto={handleSavePhoto} 
+            page={page} 
+            isSearchSaved={isSearchSaved} 
+          />
         )}
       </div>
     </>

@@ -103,7 +103,14 @@ const SearchById = () => {
             )}
 
             {!loading && !error && photo && (
-              <Photos photos={{ photos: [photo] }} handleSavePhoto={null} page={1} />
+              <Photos 
+                photos={{ photos: [photo] }} 
+                handleSavePhoto={null} 
+                page={1} 
+                hideSaveSearch={true}
+                hideTotals={true}
+                isFavoritesView={false}
+              />
             )}
           </div>
         </div>

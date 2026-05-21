@@ -8,8 +8,6 @@ import Modal from "./Modal/Modal";
 import { useMarsPhotos } from "../hooks/useMarsPhotos";
 import { useLanguage } from "../contexts/LanguageContext";
 
-let myPhotosInit = JSON.parse(localStorage.getItem("myPhotos")) || [];
-
 export const LIMITS = [5, 10, 25];
 
 const SelectsAnidados = ({ select }) => {
@@ -21,7 +19,9 @@ const SelectsAnidados = ({ select }) => {
   const [sol, setSol] = useState(searchParams.get("sol") || "1");
   const [terrestre, setTerrestre] = useState(searchParams.get("earth_date") || "2015-01-01");
   const [page, setPage] = useState(parseInt(searchParams.get("page"), 10) || 1);
-  const [myPhotos, setMyPhotos] = useState(myPhotosInit);
+  const [myPhotos, setMyPhotos] = useState(() => {
+    return JSON.parse(localStorage.getItem("myPhotos")) || [];
+  });
   const [modal, setModal] = useState({ isOpen: false });
 
   // Sincronizar estados si cambian las searchParams de la URL (cuando navegas de un favorito a otro)
@@ -55,10 +55,27 @@ const SelectsAnidados = ({ select }) => {
   }, [myPhotos]);
 
   const handleSavePhoto = () => {
-    const currentPhoto = { rover, sol, terrestre, page };
+    // Si ya está guardada, no hacer nada para prevenir duplicados
+    if (isSearchSaved) return;
+
+    const currentPhoto = { 
+      rover, 
+      sol: select ? sol : "0", 
+      terrestre: select ? "0" : terrestre, 
+      page 
+    };
     setMyPhotos((prev) => [...prev, currentPhoto]);
     setModal({ isOpen: true });
   };
+
+  const isSearchSaved = myPhotos.some((item) => {
+    return (
+      item.rover === rover &&
+      (select 
+        ? item.sol === sol && item.sol !== "0"
+        : item.terrestre === terrestre && item.terrestre !== "0")
+    );
+  });
 
   return (
     <div className="App">
@@ -99,6 +116,7 @@ const SelectsAnidados = ({ select }) => {
               loading={loading}
               error={error}
               page={page}
+              isSearchSaved={isSearchSaved}
             />
           ) : (
             <SelectsListTerrestre
@@ -108,6 +126,7 @@ const SelectsAnidados = ({ select }) => {
               loading={loading}
               error={error}
               page={page}
+              isSearchSaved={isSearchSaved}
             />
           )}
         </section>

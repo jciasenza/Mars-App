@@ -8,13 +8,15 @@ import Pagination from "../Pagination";
 import { useLanguage } from "../../contexts/LanguageContext";
 import "./styles.css";
 
-const Photos = ({ 
-  photos, 
-  handleSavePhoto, 
-  hideSaveSearch = false, 
+const Photos = ({
+  photos,
+  handleSavePhoto,
+  hideSaveSearch = false,
   page = 1,
   hideTotals = false,
-  hideResultsHeader = false
+  hideResultsHeader = false,
+  isFavoritesView = false,
+  isSearchSaved = false
 }) => {
   const { t } = useLanguage();
 
@@ -29,11 +31,11 @@ const Photos = ({
   // Estado para la foto seleccionada en pantalla completa (Lightbox)
   const [selectedPhoto, setSelectedPhoto] = useState(null);
 
-  // Si estamos en la vista de favoritos (hideSaveSearch === true), la fuente de verdad es el estado local de favPhotos
-  const fullPhotosArr = hideSaveSearch ? favPhotos : (photos?.photos || []);
-  
-  const activePage = hideSaveSearch ? localPage : page;
-  
+  // Si estamos en la vista de favoritos (isFavoritesView === true), la fuente de verdad es el estado local de favPhotos
+  const fullPhotosArr = isFavoritesView ? favPhotos : (photos?.photos || []);
+
+  const activePage = isFavoritesView ? localPage : page;
+
   // Realizar rebanado de 8 fotos por página para la vista actual
   const photosArr = fullPhotosArr.slice((activePage - 1) * 8, activePage * 8);
 
@@ -41,10 +43,10 @@ const Photos = ({
 
   // Auto-corregir la página actual si el usuario desmarca favoritos y la página queda fuera de límites
   useEffect(() => {
-    if (hideSaveSearch && localPage > totalPages && totalPages > 0) {
+    if (isFavoritesView && localPage > totalPages && totalPages > 0) {
       setLocalPage(totalPages);
     }
-  }, [fullPhotosArr.length, localPage, totalPages, hideSaveSearch]);
+  }, [fullPhotosArr.length, localPage, totalPages, isFavoritesView]);
 
   const toggleFav = (photo) => {
     let updated;
@@ -63,7 +65,7 @@ const Photos = ({
       <Centered>
         <FiCameraOff />
         <div style={{ marginTop: "12px", textAlign: "center", maxWidth: "480px" }}>
-          {hideSaveSearch ? t("fav_photos_empty") : t("gallery_no_photos")}
+          {isFavoritesView ? t("fav_photos_empty") : t("gallery_no_photos")}
         </div>
       </Centered>
     );
@@ -76,19 +78,39 @@ const Photos = ({
           <div>
             <span>{t("gallery_results")}</span>
             <strong>
-              {fullPhotosArr.length} {hideSaveSearch ? t("fav_photos_results") : t("gallery_found")}
+              {fullPhotosArr.length} {isFavoritesView ? t("fav_photos_results") : t("gallery_found")}
             </strong>
           </div>
           {!hideSaveSearch && (
-            <button
-              className="favorite-action"
-              onClick={handleSavePhoto}
-              title={t("filter_save_btn")}
-              type="button"
-            >
-              <AiOutlineStar />
-              {t("filter_save_btn")}
-            </button>
+            isSearchSaved ? (
+              <button
+                className="favorite-action"
+                title={t("filter_saved_btn")}
+                type="button"
+                disabled
+                style={{
+                  opacity: 0.9,
+                  cursor: "default",
+                  backgroundColor: "rgba(241, 180, 91, 0.12)",
+                  border: "1px solid var(--mars-gold)",
+                  color: "var(--mars-gold)",
+                  boxShadow: "0 0 10px rgba(241, 180, 91, 0.1)"
+                }}
+              >
+                <AiFillStar style={{ color: "var(--mars-gold)" }} />
+                {t("filter_saved_btn")}
+              </button>
+            ) : (
+              <button
+                className="favorite-action"
+                onClick={handleSavePhoto}
+                title={t("filter_save_btn")}
+                type="button"
+              >
+                <AiOutlineStar />
+                {t("filter_save_btn")}
+              </button>
+            )
           )}
         </div>
       )}
@@ -176,7 +198,7 @@ const Photos = ({
       </div>
       {!hideTotals && <TotalsPhotos total={fullPhotosArr.length} />}
 
-      {hideSaveSearch && fullPhotosArr.length > 8 && (
+      {isFavoritesView && fullPhotosArr.length > 8 && (
         <section className="gallery-section" style={{ marginTop: "32px", width: "100%" }}>
           <Pagination
             setPage={(p) => { window.scrollTo(0, 0); setLocalPage(p); }}

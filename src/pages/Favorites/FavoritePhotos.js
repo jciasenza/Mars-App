@@ -17,7 +17,7 @@ const FavoritePhotos = () => {
               <h1>{t("fav_photos_title")}</h1>
             </div>
           </div>
-          <Photos hideSaveSearch={true} />
+          <Photos hideSaveSearch={true} isFavoritesView={true} />
         </div>
       </main>
     </div>
